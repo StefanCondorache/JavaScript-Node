@@ -1,0 +1,32 @@
+Super = keyword is used in classes to call the constructor or
+        access the properties and methods of a parent (superclass)
+        this = this object
+        super = the parent
+
+class Animal {
+  constructor(name) {
+    this.name = name;  // 'this' refers to the instance of Animal
+  }
+
+  speak() {
+    console.log(`${this.name} makes a sound`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);  // 'super()' calls the parent class (Animal) constructor
+    this.breed = breed;  // 'this' refers to the instance of Dog
+  }
+
+  speak() {
+    super.speak();  // 'super.speak()' calls the parent class's speak method
+    console.log(`${this.name} barks`);
+  }
+}
+
+const dog = new Dog("Rex", "German Shepherd");
+dog.speak();
+// Outputs:
+// Rex makes a sound
+// Rex barks
