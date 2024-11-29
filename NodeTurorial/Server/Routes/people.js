@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-let { people } = require('D:/OneDrive/Desktop/JavaScript/Products.js');
+let { people } = require('../../../Products.js');
 
 router.get('/', (req, res) => {
     res.status(200).json({ succsess : true, data : people });
