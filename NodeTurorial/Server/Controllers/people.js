@@ -1,5 +1,5 @@
 
-let { people } = require('../../../Products.js')
+let { people } = require('../../Products.js')
 
 const getPeople = (req, res) => {
     res.status(200).json({ succsess : true, data : people });
