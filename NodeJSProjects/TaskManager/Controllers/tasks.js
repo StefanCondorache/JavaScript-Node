@@ -1,13 +1,13 @@
 const Task = require('../Modules/task.js');
+const asyncWrapper = require('../Middleware/async.js')
 
-const getAllTasks = async (req, res) => {
-    try {
+
+const getAllTasks = asyncWrapper( async (req, res) => {  
         const tasks = await Task.find({}) // as an argument find() accepts filter, but without it, it returns all the objects 
         res.status(200).json({tasks});
-    } catch (error) {
-        res.status(500).json({ error : err })
-    }
-}
+        // res.status(200).json({ tasks, amount : tasks.length});
+        //res.status(200).json({ success : true, data : { tasks, nHabits : tasks.length } });
+})
 
 const createTask = async (req, res) => {
     try{
@@ -26,7 +26,10 @@ const getTask = async (req, res) => {
         const task = await Task.findOne({ _id : taskID })
         
         if( !task ){
-            return res.status(404).json({ msg : `No task with id : ${taskID}` });
+            const error = new Error('Not Found');
+            error.status = 404;
+            return next(error)
+            // return res.status(404).json({ msg : `No task with id : ${taskID}` });
         }
 
         res.status(200).json({ task });
@@ -35,8 +38,23 @@ const getTask = async (req, res) => {
     }
 }
 
-const updateTask = (req, res) => {
-    res.json({ id : req.params.id, msg : 'update task'});
+const updateTask = async (req, res) => {
+    try {
+        const { id : taskId } = req.params;
+        
+        const task = await Task.findOneAndUpdate({ _id : taskId }, req.body, {
+            new : true,
+            runValidators : true
+        });
+
+        if( !task ){
+            return res.status(404).json({ msg : `No task with id : ${taskID}` });
+        }
+
+        res.status(200).json({  })
+    } catch (err) {
+        return res.status(500).json({ error : err })
+    }
 }
 
 const deleteTask = async (req, res) => {
@@ -53,6 +71,8 @@ const deleteTask = async (req, res) => {
         return res.status(500).json({ error : err })
     }
 }
+
+
 module.exports = {
     getAllTasks,
     createTask,
