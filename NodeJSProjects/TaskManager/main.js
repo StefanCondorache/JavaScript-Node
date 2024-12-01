@@ -26,8 +26,7 @@ app.use(errorHandlerMiddleware);
 // app.patch('/:id'); // patch is used for partial update, while put changes even the structure/the object
 // app.delete('/:id');
 
-
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 
 const start = async () => {
