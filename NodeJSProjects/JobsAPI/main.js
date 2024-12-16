@@ -4,6 +4,8 @@ require('express-async-errors');
 const express = require('express');
 const app = express();
 
+const authentificateUser = require('./NodeJSProjects/JobsAPI/Middleware/authentification.js')
+
 // connect DB
 const connectDB = require('./NodeJSProjects/JobsAPI/DB/connectDB')
 
@@ -17,12 +19,9 @@ const errorHanderMiddleware = require('./NodeJSProjects/JobsAPI/Middleware/error
 
 app.use(express.json());
 
-
-
 // routes
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/jobs', jobsRouter);
-
+app.use('/api/v1/jobs', authentificateUser, jobsRouter);
 
 app.use(notFoundMiddleWare);
 app.use(errorHanderMiddleware);
